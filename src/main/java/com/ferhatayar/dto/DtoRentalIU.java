@@ -27,6 +27,8 @@ public class DtoRentalIU {
     
     private BigDecimal totalPrice;
     
+    private Long paymentId;
+    
     private RentalsStatus status;
 	
 }

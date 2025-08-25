@@ -39,14 +39,6 @@ public class PaymentServiceImpl implements IPaymentService{
 		Payments payment = new Payments();
 		BeanUtils.copyProperties(input, payment);
 		
-		Rentals rental = rentalRepository.findById(input.getRentalId())
-				.orElseThrow(() -> new BaseExpection(new ErrorMessage(MessageType.RENTAL_NOT_FOUND,input.getRentalId().toString())));
-		payment.setRental(rental);
-		
-		Purchases purchase = purchaseRepository.findById(input.getPurchaseId())
-				.orElseThrow(() -> new BaseExpection(new ErrorMessage(MessageType.PURCHASE_NOT_FOUND,input.getPurchaseId().toString())));
-		payment.setPurchase(purchase);
-		
 		return payment;		
 	}
 	
@@ -58,10 +50,6 @@ public class PaymentServiceImpl implements IPaymentService{
 
 		Payments payment = paymentRepository.save(createPayment(input));
 		BeanUtils.copyProperties(payment, dtoPayment);
-		BeanUtils.copyProperties(payment.getRental(), dtoRental);
-		BeanUtils.copyProperties(payment.getPurchase(), dtoPurchase);
-		dtoPayment.setRental(dtoRental);
-		dtoPayment.setPurchase(dtoPurchase);
 		
 		return dtoPayment;
 	}
@@ -75,16 +63,6 @@ public class PaymentServiceImpl implements IPaymentService{
 			DtoPayment dtoPayment = new DtoPayment();
 			BeanUtils.copyProperties(payment, dtoPayment);
 			
-			if(payment.getRental() != null) {
-				DtoRental dtoRental = new DtoRental();
-				BeanUtils.copyProperties(payment.getRental(), dtoRental);
-				dtoPayment.setRental(dtoRental);
-			}
-			if(payment.getPurchase() != null) {
-				DtoPurchase dtoPurchase = new DtoPurchase();
-				BeanUtils.copyProperties(payment.getPurchase(), dtoPurchase);
-				dtoPayment.setPurchase(dtoPurchase);
-			}
 			dtoPaymentList.add(dtoPayment);
 		}
 		return dtoPaymentList;
@@ -92,16 +70,10 @@ public class PaymentServiceImpl implements IPaymentService{
 
 	private DtoPayment paymentToDto(Long id) {
 		DtoPayment dtoPayment = new DtoPayment();
-		DtoRental dtoRental = new DtoRental();
-		DtoPurchase dtoPurchase = new DtoPurchase();
 		
 		Payments payment = paymentRepository.findById(id)
 				.orElseThrow(() -> new BaseExpection(new ErrorMessage(MessageType.PAYMENT_NOT_FOUND,id.toString())));
 		BeanUtils.copyProperties(payment, dtoPayment);
-		BeanUtils.copyProperties(payment.getRental(), dtoRental);
-		BeanUtils.copyProperties(payment.getPurchase(), dtoPurchase);
-		dtoPayment.setRental(dtoRental);
-		dtoPayment.setPurchase(dtoPurchase);
 		
 		return dtoPayment;
 	}
@@ -132,24 +104,10 @@ public class PaymentServiceImpl implements IPaymentService{
 		payment.setPaymentMethod(input.getPaymentMethod());
 		payment.setStatus(input.getStatus());
 		
-		Rentals rentals = rentalRepository.findById(input.getRentalId())
-				.orElseThrow(() -> new BaseExpection(new ErrorMessage(MessageType.RENTAL_NOT_FOUND,input.getRentalId().toString())));
-		payment.setRental(rentals);
-		
-		Purchases purchase = purchaseRepository.findById(input.getPurchaseId())
-				.orElseThrow(() -> new BaseExpection(new ErrorMessage(MessageType.PURCHASE_NOT_FOUND,input.getPurchaseId().toString())));
-		payment.setPurchase(purchase);
-		
 		Payments updatedPayment = paymentRepository.save(payment);
 		DtoPayment dtoPayment = new DtoPayment();
-		DtoRental dtoRental = new DtoRental();
-		DtoPurchase dtoPurchase = new DtoPurchase();
 		
 		BeanUtils.copyProperties(updatedPayment, dtoPayment);
-		BeanUtils.copyProperties(updatedPayment.getRental(), dtoRental);
-		BeanUtils.copyProperties(updatedPayment.getPurchase(), dtoPurchase);
-		dtoPayment.setRental(dtoRental);
-		dtoPayment.setPurchase(dtoPurchase);
 		
 		return dtoPayment;
 	}

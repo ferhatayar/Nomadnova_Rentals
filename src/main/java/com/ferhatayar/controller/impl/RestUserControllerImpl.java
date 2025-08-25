@@ -47,6 +47,12 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 	public RootEntity<DtoUser> updateUser(@PathVariable(name = "id") Long id, @RequestBody DtoUser input) {
 		return ok(userService.updateUser(id, input));
 	}
+
+	@GetMapping("username/{username}")
+	@Override
+	public RootEntity<DtoUser> getUserByUsername(@PathVariable(name = "username") String username) {
+		return ok(userService.getUserByUsername(username));
+	}
 	
 	
 

@@ -14,4 +14,5 @@ public interface IUserService {
 	
 	public DtoUser updateUser(Long id, DtoUser input);
 	
+	public DtoUser getUserByUsername(String username);
 }

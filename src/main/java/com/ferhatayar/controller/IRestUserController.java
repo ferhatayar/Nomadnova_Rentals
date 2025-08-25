@@ -14,4 +14,6 @@ public interface IRestUserController {
 	
 	public RootEntity<DtoUser> updateUser(Long id, DtoUser input);
 	
+	public RootEntity<DtoUser> getUserByUsername(String username);
+	
 }

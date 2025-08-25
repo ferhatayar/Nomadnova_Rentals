@@ -15,12 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DtoPaymentIU {
-
-	 private Long rentalId; 
     
 	 private BigDecimal amount;
-	 
-	 private Long purchaseId;
 	 
 	 private PaymentMethod paymentMethod;
 	 

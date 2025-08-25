@@ -33,15 +33,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
+		
 		String header = request.getHeader("Authorization");
 		if(header == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
+		
+		if (!header.startsWith("Bearer ")) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
+		
 		String token;
 		String username;
 		
 		token = header.substring(7);
+		System.out.println("Token extracted: " + (token.length() > 10 ? token.substring(0, 10) + "..." : token));
 		try {
 			username = jwtService.getUsernameByToken(token);
 			if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

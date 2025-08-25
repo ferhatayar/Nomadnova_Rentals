@@ -171,7 +171,40 @@ public class UserServiceImpl implements IUserService{
 		
 		return userToDto(updatedUser.getId());
 	}
+
+	@Override
+	public DtoUser getUserByUsername(String username) {
+		Users user = userRepository.findByUsername(username)
+	            .orElseThrow(() -> new BaseExpection(
+	                    new ErrorMessage(MessageType.USER_NOT_FOUND, username)
+	            ));
+
+	    DtoUser dtoUser = new DtoUser();
+	    BeanUtils.copyProperties(user, dtoUser);
+
+	    if (user.getAddresses() != null) {
+	        user.getAddresses().forEach(address -> {
+	            DtoAddresses dtoAddress = new DtoAddresses();
+	            BeanUtils.copyProperties(address, dtoAddress);
+	            dtoUser.getAddresses().add(dtoAddress);
+	        });
+	    }
+	    if (user.getRentals() != null) {
+	        user.getRentals().forEach(rental -> {
+	            DtoRental dtoRental = new DtoRental();
+	            BeanUtils.copyProperties(rental, dtoRental);
+	            dtoUser.getRentals().add(dtoRental);
+	        });
+	    }
+	    if (user.getPurchases() != null) {
+	        user.getPurchases().forEach(purchase -> {
+	            DtoPurchase dtoPurchase = new DtoPurchase();
+	            BeanUtils.copyProperties(purchase, dtoPurchase);
+	            dtoUser.getPurchases().add(dtoPurchase);
+	        });
+	}
+		return dtoUser;
 	
 	
 	
-}
+	}}
